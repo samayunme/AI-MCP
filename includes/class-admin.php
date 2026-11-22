@@ -190,8 +190,8 @@ class MoshAI_Admin {
 			/* translators: %s feature name */
 			echo '<h2>' . esc_html( sprintf( __( 'Connect an AI to unlock %s', 'ai-mcp' ), $tabs[ $tab ][0] ) ) . '</h2><p>' . esc_html__( 'AI features stay locked until an AI is connected, so nothing on your site calls an AI by accident. OpenAI, Claude, Gemini, OpenRouter or any other AI with an OpenAI-compatible API works. Gemini has a free tier.', 'ai-mcp' ) . '</p>';
 		}
-		echo '<p>' . self::go( 'settings', __( 'Connect an AI', 'ai-mcp' ), 'button button-primary button-hero' ) . '</p>'; // phpcs:ignore
-		echo '<p class="mx-help">' . esc_html__( 'MCP works without an API key: Claude, ChatGPT, Cursor or ClickUp bring their own AI.', 'ai-mcp' ) . ' ' . self::go( 'mcp', __( 'Set up MCP', 'ai-mcp' ), '' ) . '</p></div>'; // phpcs:ignore
+		MoshAI_Kses::out( '<p>' . self::go( 'settings', __( 'Connect an AI', 'ai-mcp' ), 'button button-primary button-hero' ) . '</p>' );
+		MoshAI_Kses::out( '<p class="mx-help">' . esc_html__( 'MCP works without an API key: Claude, ChatGPT, Cursor or ClickUp bring their own AI.', 'ai-mcp' ) . ' ' . self::go( 'mcp', __( 'Set up MCP', 'ai-mcp' ), '' ) . '</p></div>' );
 	}
 
 	/** One line of the AI changes feed. Mirrors feedHtml() in admin.js. */
@@ -238,7 +238,7 @@ class MoshAI_Admin {
 			echo '<a class="mx-pill is-off" href="' . esc_url( self::url( 'settings' ) ) . '" data-go="settings"><span class="mx-dot"></span>' . esc_html__( 'No API connected', 'ai-mcp' ) . '</a>';
 		}
 		if ( current_user_can( 'manage_options' ) ) {
-			echo self::mcp_pill(); // phpcs:ignore
+			MoshAI_Kses::out( self::mcp_pill() );
 		}
 		echo '</div>';
 		echo '</header><nav class="mx-tabs" role="tablist">';
@@ -296,25 +296,25 @@ class MoshAI_Admin {
 			echo '</select>';
 			echo '<input type="password" name="key" placeholder="' . esc_attr__( 'Paste your API key', 'ai-mcp' ) . '" autocomplete="new-password" spellcheck="false">';
 			echo '<button type="button" class="button button-primary button-hero" data-connect>' . esc_html__( 'Connect', 'ai-mcp' ) . '</button></div>';
-			echo '<p class="mx-help">' . esc_html__( 'OpenAI or Gemini unlock everything (chat, images, knowledge base). Gemini has a free tier. Claude and OpenRouter work for chat and writing.', 'ai-mcp' ) . ' <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">' . esc_html__( 'Get a free Gemini key', 'ai-mcp' ) . '</a> · ' . self::go( 'settings', __( 'Using DeepSeek, Groq, Mistral, Grok, Ollama or another AI? Set it up under Others', 'ai-mcp' ), '' ) . '</p></div>'; // phpcs:ignore
+			MoshAI_Kses::out( '<p class="mx-help">' . esc_html__( 'OpenAI or Gemini unlock everything (chat, images, knowledge base). Gemini has a free tier. Claude and OpenRouter work for chat and writing.', 'ai-mcp' ) . ' <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">' . esc_html__( 'Get a free Gemini key', 'ai-mcp' ) . '</a> · ' . self::go( 'settings', __( 'Using DeepSeek, Groq, Mistral, Grok, Ollama or another AI? Set it up under Others', 'ai-mcp' ), '' ) . '</p></div>' );
 		}
 
 		echo '<div class="mx-grid mx-grid-4">';
-		echo self::stat( __( 'Requests today', 'ai-mcp' ), number_format_i18n( $req24 ) ); // phpcs:ignore
-		echo self::stat( __( 'Tokens, 30 days', 'ai-mcp' ), number_format_i18n( $tok30 ) ); // phpcs:ignore
-		echo self::stat( __( 'Knowledge chunks', 'ai-mcp' ), number_format_i18n( MoshAI_Core::kb_count() ) ); // phpcs:ignore
-		echo self::stat( __( 'Chatbots', 'ai-mcp' ), count( MoshAI_Chatbots::all() ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::stat( __( 'Requests today', 'ai-mcp' ), number_format_i18n( $req24 ) ) );
+		MoshAI_Kses::out( self::stat( __( 'Tokens, 30 days', 'ai-mcp' ), number_format_i18n( $tok30 ) ) );
+		MoshAI_Kses::out( self::stat( __( 'Knowledge chunks', 'ai-mcp' ), number_format_i18n( MoshAI_Core::kb_count() ) ) );
+		MoshAI_Kses::out( self::stat( __( 'Chatbots', 'ai-mcp' ), count( MoshAI_Chatbots::all() ) ) );
 		echo '</div>';
 
 		if ( $manage ) {
 			$m = MoshAI_Activity::mcp_status();
 			echo '<div class="mx-grid mx-grid-home">';
-			echo '<div class="mx-card"><h2><span class="dashicons dashicons-backup"></span>' . esc_html__( 'What AI changed on your site', 'ai-mcp' ) . ' <span class="mx-h2-link">' . self::go( 'activity', __( 'See all', 'ai-mcp' ), '' ) . '</span></h2>'; // phpcs:ignore
+			MoshAI_Kses::out( '<div class="mx-card"><h2><span class="dashicons dashicons-backup"></span>' . esc_html__( 'What AI changed on your site', 'ai-mcp' ) . ' <span class="mx-h2-link">' . self::go( 'activity', __( 'See all', 'ai-mcp' ), '' ) . '</span></h2>' );
 			echo '<p class="mx-help">' . esc_html__( 'Every change made through MCP or the AI Agent, plus blocked attempts. Updates live.', 'ai-mcp' ) . '</p>';
-			echo self::feed( 8 ); // phpcs:ignore
+			MoshAI_Kses::out( self::feed( 8 ) );
 			echo '</div>';
 			echo '<div class="mx-card mx-mcp-card"><h2><span class="dashicons dashicons-rest-api"></span>' . esc_html__( 'MCP connection', 'ai-mcp' ) . '</h2>';
-			echo '<div class="mx-mcp-big">' . self::mcp_pill() . '</div>'; // phpcs:ignore
+			MoshAI_Kses::out( '<div class="mx-mcp-big">' . self::mcp_pill() . '</div>' );
 			$clients = array_slice( MoshAI_Activity::clients(), 0, 3 );
 			if ( $clients ) {
 				echo '<ul class="mx-mini-list">';
@@ -325,20 +325,20 @@ class MoshAI_Admin {
 			} else {
 				echo '<p class="mx-help">' . esc_html__( 'No AI has connected yet. Connect Claude, ChatGPT, Cursor or ClickUp in a minute, no API key needed.', 'ai-mcp' ) . '</p>';
 			}
-			echo '<p>' . self::go( 'mcp', 'disabled' === $m['state'] ? __( 'Turn on MCP', 'ai-mcp' ) : __( 'Manage MCP', 'ai-mcp' ), 'button' ) . '</p></div>'; // phpcs:ignore
+			MoshAI_Kses::out( '<p>' . self::go( 'mcp', 'disabled' === $m['state'] ? __( 'Turn on MCP', 'ai-mcp' ) : __( 'Manage MCP', 'ai-mcp' ), 'button' ) . '</p></div>' );
 			echo '</div>';
 		}
 
 		echo '<div class="mx-grid mx-grid-2">';
 		echo '<div class="mx-card"><h2>' . esc_html__( 'Quick actions', 'ai-mcp' ) . '</h2><div class="mx-actions">';
-		echo self::go( 'studio:article', __( 'Write an article', 'ai-mcp' ), 'mx-action' ); // phpcs:ignore
-		echo self::go( 'studio:image', __( 'Generate an image', 'ai-mcp' ), 'mx-action' ); // phpcs:ignore
-		echo self::go( 'studio:chat', __( 'Open the playground', 'ai-mcp' ), 'mx-action' ); // phpcs:ignore
+		MoshAI_Kses::out( self::go( 'studio:article', __( 'Write an article', 'ai-mcp' ), 'mx-action' ) );
+		MoshAI_Kses::out( self::go( 'studio:image', __( 'Generate an image', 'ai-mcp' ), 'mx-action' ) );
+		MoshAI_Kses::out( self::go( 'studio:chat', __( 'Open the playground', 'ai-mcp' ), 'mx-action' ) );
 		if ( $manage ) {
-			echo self::go( 'agent', __( 'Ask the AI Agent', 'ai-mcp' ), 'mx-action' ); // phpcs:ignore
-			echo self::go( 'chatbots', __( 'Edit chatbot', 'ai-mcp' ), 'mx-action' ); // phpcs:ignore
-			echo self::go( 'knowledge', __( 'Sync knowledge', 'ai-mcp' ), 'mx-action' ); // phpcs:ignore
-			echo self::go( 'mcp', __( 'Connect Claude / Cursor', 'ai-mcp' ), 'mx-action' ); // phpcs:ignore
+			MoshAI_Kses::out( self::go( 'agent', __( 'Ask the AI Agent', 'ai-mcp' ), 'mx-action' ) );
+			MoshAI_Kses::out( self::go( 'chatbots', __( 'Edit chatbot', 'ai-mcp' ), 'mx-action' ) );
+			MoshAI_Kses::out( self::go( 'knowledge', __( 'Sync knowledge', 'ai-mcp' ), 'mx-action' ) );
+			MoshAI_Kses::out( self::go( 'mcp', __( 'Connect Claude / Cursor', 'ai-mcp' ), 'mx-action' ) );
 		}
 		echo '</div></div>';
 
@@ -401,11 +401,11 @@ class MoshAI_Admin {
 
 		echo '<aside class="mx-agent-side">';
 		echo '<div class="mx-card"><h3>' . esc_html__( 'Agent brain', 'ai-mcp' ) . '</h3>';
-		echo self::field( __( 'Provider', 'ai-mcp' ), str_replace( '<select ', '<select data-instant ', self::provider_select( 'agent_provider', $s['agent_provider'] ) ) ); // phpcs:ignore
-		echo self::field( __( 'Model', 'ai-mcp' ), str_replace( '<input ', '<input data-instant ', self::model_input( 'agent_model', $s['agent_model'], $prov ) ), __( 'Use a strong tool-calling model: gpt-4.1, gpt-5, Claude Sonnet, Gemini 2.5 Pro.', 'ai-mcp' ) ); // phpcs:ignore
-		echo self::toggle( 'agent_confirm', $s['agent_confirm'], __( 'Ask before making changes', 'ai-mcp' ), __( 'Reading is instant. Posting, editing, orders, stock, refunds wait for your OK.', 'ai-mcp' ), 'data-instant' ); // phpcs:ignore
-		echo self::field( __( 'Max steps per request', 'ai-mcp' ), str_replace( '<input ', '<input data-instant ', self::num( 'agent_max_steps', $s['agent_max_steps'], 3, 40 ) ) ); // phpcs:ignore
-		echo self::field( __( 'House rules for the agent', 'ai-mcp' ), str_replace( '<textarea ', '<textarea data-instant ', self::area( 'agent_instructions', $s['agent_instructions'], 3, __( 'e.g. Always write in US English. Never publish without asking.', 'ai-mcp' ) ) ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Provider', 'ai-mcp' ), str_replace( '<select ', '<select data-instant ', self::provider_select( 'agent_provider', $s['agent_provider'] ) ) ) );
+		MoshAI_Kses::out( self::field( __( 'Model', 'ai-mcp' ), str_replace( '<input ', '<input data-instant ', self::model_input( 'agent_model', $s['agent_model'], $prov ) ), __( 'Use a strong tool-calling model: gpt-4.1, gpt-5, Claude Sonnet, Gemini 2.5 Pro.', 'ai-mcp' ) ) );
+		MoshAI_Kses::out( self::toggle( 'agent_confirm', $s['agent_confirm'], __( 'Ask before making changes', 'ai-mcp' ), __( 'Reading is instant. Posting, editing, orders, stock, refunds wait for your OK.', 'ai-mcp' ), 'data-instant' ) );
+		MoshAI_Kses::out( self::field( __( 'Max steps per request', 'ai-mcp' ), str_replace( '<input ', '<input data-instant ', self::num( 'agent_max_steps', $s['agent_max_steps'], 3, 40 ) ) ) );
+		MoshAI_Kses::out( self::field( __( 'House rules for the agent', 'ai-mcp' ), str_replace( '<textarea ', '<textarea data-instant ', self::area( 'agent_instructions', $s['agent_instructions'], 3, __( 'e.g. Always write in US English. Never publish without asking.', 'ai-mcp' ) ) ) ) );
 		echo '</div>';
 		echo '<div class="mx-card"><h3>' . esc_html( sprintf( /* translators: %d: number of tools */ __( '%d tools ready', 'ai-mcp' ), count( $tools ) ) ) . '</h3><ul class="mx-tool-groups">';
 		$groups = array(
@@ -418,7 +418,7 @@ class MoshAI_Admin {
 		foreach ( $groups as $label => $on ) {
 			echo '<li class="' . ( $on ? 'is-on' : 'is-off' ) . '"><span class="dashicons dashicons-' . ( $on ? 'yes' : 'minus' ) . '"></span>' . esc_html( $label ) . '</li>';
 		}
-		echo '</ul><p class="mx-help">' . esc_html__( 'Prefer Claude Desktop, ChatGPT or Cursor? Same tools over MCP:', 'ai-mcp' ) . ' ' . self::go( 'mcp', __( 'set it up', 'ai-mcp' ), 'button-link' ) . '</p></div>'; // phpcs:ignore
+		MoshAI_Kses::out( '</ul><p class="mx-help">' . esc_html__( 'Prefer Claude Desktop, ChatGPT or Cursor? Same tools over MCP:', 'ai-mcp' ) . ' ' . self::go( 'mcp', __( 'set it up', 'ai-mcp' ), 'button-link' ) . '</p></div>' );
 		echo '</aside></div>';
 	}
 
@@ -430,32 +430,32 @@ class MoshAI_Admin {
 		echo '<div class="mx-card mx-edit-col" data-fields>';
 		echo '<div class="mx-edit-head"><h2 data-edit-title></h2><code class="moshai-copy" data-shortcode></code></div><input type="hidden" name="id">';
 		echo '<h3 class="mx-section">' . esc_html__( 'Basics', 'ai-mcp' ) . '</h3><div class="mx-grid mx-grid-2">';
-		echo self::field( __( 'Name (admin only)', 'ai-mcp' ), self::text( 'name', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Window title', 'ai-mcp' ), self::text( 'title', '' ) ); // phpcs:ignore
-		echo self::field( __( 'ID for the shortcode', 'ai-mcp' ), self::text( 'slug', '', __( 'auto from name', 'ai-mcp' ) ), '', 'mx-new-only' ); // phpcs:ignore
-		echo self::field( __( 'Welcome message', 'ai-mcp' ), self::text( 'start', '' ), '', 'mx-span-2' ); // phpcs:ignore
-		echo self::field( __( 'Instructions', 'ai-mcp' ), self::area( 'instructions', '', 6 ), __( 'Who the bot is and how it answers. Placeholders: {site}, {site_url}, {date}, {user_name}', 'ai-mcp' ), 'mx-span-2' ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Name (admin only)', 'ai-mcp' ), self::text( 'name', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Window title', 'ai-mcp' ), self::text( 'title', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'ID for the shortcode', 'ai-mcp' ), self::text( 'slug', '', __( 'auto from name', 'ai-mcp' ) ), '', 'mx-new-only' ) );
+		MoshAI_Kses::out( self::field( __( 'Welcome message', 'ai-mcp' ), self::text( 'start', '' ), '', 'mx-span-2' ) );
+		MoshAI_Kses::out( self::field( __( 'Instructions', 'ai-mcp' ), self::area( 'instructions', '', 6 ), __( 'Who the bot is and how it answers. Placeholders: {site}, {site_url}, {date}, {user_name}', 'ai-mcp' ), 'mx-span-2' ) );
 		echo '</div>';
 		echo '<h3 class="mx-section">' . esc_html__( 'Brain', 'ai-mcp' ) . '</h3><div class="mx-grid mx-grid-2">';
-		echo self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'provider', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'model', '' ) ); // phpcs:ignore
-		echo '<div class="mx-span-2">' . self::toggle( 'kb', 0, __( 'Answer from the knowledge base', 'ai-mcp' ), __( 'Uses your synced site content. Sync it in the Knowledge tab.', 'ai-mcp' ) ) . '</div>'; // phpcs:ignore
-		echo '<div class="mx-span-2">' . self::toggle( 'sources', 1, __( 'Show source links under answers', 'ai-mcp' ) ) . '</div>'; // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'provider', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'model', '' ) ) );
+		MoshAI_Kses::out( '<div class="mx-span-2">' . self::toggle( 'kb', 0, __( 'Answer from the knowledge base', 'ai-mcp' ), __( 'Uses your synced site content. Sync it in the Knowledge tab.', 'ai-mcp' ) ) . '</div>' );
+		MoshAI_Kses::out( '<div class="mx-span-2">' . self::toggle( 'sources', 1, __( 'Show source links under answers', 'ai-mcp' ) ) . '</div>' );
 		echo '</div>';
 		echo '<h3 class="mx-section">' . esc_html__( 'Look and access', 'ai-mcp' ) . '</h3><div class="mx-grid mx-grid-2">';
-		echo self::field( __( 'Color', 'ai-mcp' ), '<input type="color" name="color">' ); // phpcs:ignore
-		echo self::field( __( 'Bubble position', 'ai-mcp' ), '<select name="position"><option value="right">' . esc_html__( 'Bottom right', 'ai-mcp' ) . '</option><option value="left">' . esc_html__( 'Bottom left', 'ai-mcp' ) . '</option></select>' ); // phpcs:ignore
-		echo '<div class="mx-span-2">' . self::toggle( 'site_popup', 0, __( 'Show as the floating chat bubble on every page', 'ai-mcp' ) ) . '</div>'; // phpcs:ignore
-		echo '<div class="mx-span-2">' . self::toggle( 'guests', 1, __( 'Visitors who are not logged in can chat', 'ai-mcp' ) ) . '</div>'; // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Color', 'ai-mcp' ), '<input type="color" name="color">' ) );
+		MoshAI_Kses::out( self::field( __( 'Bubble position', 'ai-mcp' ), '<select name="position"><option value="right">' . esc_html__( 'Bottom right', 'ai-mcp' ) . '</option><option value="left">' . esc_html__( 'Bottom left', 'ai-mcp' ) . '</option></select>' ) );
+		MoshAI_Kses::out( '<div class="mx-span-2">' . self::toggle( 'site_popup', 0, __( 'Show as the floating chat bubble on every page', 'ai-mcp' ) ) . '</div>' );
+		MoshAI_Kses::out( '<div class="mx-span-2">' . self::toggle( 'guests', 1, __( 'Visitors who are not logged in can chat', 'ai-mcp' ) ) . '</div>' );
 		echo '</div>';
 		echo '<details class="mx-advanced"><summary>' . esc_html__( 'Advanced', 'ai-mcp' ) . '</summary><div class="mx-grid mx-grid-3">';
-		echo self::field( __( 'Input placeholder', 'ai-mcp' ), self::text( 'placeholder', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Send button', 'ai-mcp' ), self::text( 'send', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Creativity (temperature)', 'ai-mcp' ), self::num( 'temperature', 0.7, 0, 2, 0.1 ) ); // phpcs:ignore
-		echo self::field( __( 'Max answer tokens', 'ai-mcp' ), self::num( 'max_tokens', 1024, 16, 64000 ) ); // phpcs:ignore
-		echo self::field( __( 'Messages of memory', 'ai-mcp' ), self::num( 'context', 10, 0, 50 ) ); // phpcs:ignore
-		echo self::field( __( 'Max characters per message', 'ai-mcp' ), self::num( 'max_input', 1000, 50, 10000 ) ); // phpcs:ignore
-		echo self::field( __( 'Knowledge chunks per answer', 'ai-mcp' ), self::num( 'kb_k', 3, 1, 10 ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Input placeholder', 'ai-mcp' ), self::text( 'placeholder', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Send button', 'ai-mcp' ), self::text( 'send', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Creativity (temperature)', 'ai-mcp' ), self::num( 'temperature', 0.7, 0, 2, 0.1 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Max answer tokens', 'ai-mcp' ), self::num( 'max_tokens', 1024, 16, 64000 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Messages of memory', 'ai-mcp' ), self::num( 'context', 10, 0, 50 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Max characters per message', 'ai-mcp' ), self::num( 'max_input', 1000, 50, 10000 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Knowledge chunks per answer', 'ai-mcp' ), self::num( 'kb_k', 3, 1, 10 ) ) );
 		echo '</div></details>';
 		echo '<div class="mx-edit-actions"><button type="button" class="button button-primary button-large" data-save>' . esc_html__( 'Save chatbot', 'ai-mcp' ) . '</button><button type="button" class="button-link button-link-delete" data-delete>' . esc_html__( 'Delete', 'ai-mcp' ) . '</button></div>';
 		echo '</div>';
@@ -471,31 +471,31 @@ class MoshAI_Admin {
 
 		echo '<div class="mx-card moshai-tool" data-tool="playground" data-subpanel="chat">';
 		echo '<div class="mx-grid mx-grid-4">';
-		echo self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'provider', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'model', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Creativity', 'ai-mcp' ), self::num( 'temperature', $s['temperature'], 0, 2, 0.1 ) ); // phpcs:ignore
-		echo self::field( __( 'Max tokens', 'ai-mcp' ), self::num( 'max_tokens', $s['max_tokens'], 16, 64000 ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'provider', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'model', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Creativity', 'ai-mcp' ), self::num( 'temperature', $s['temperature'], 0, 2, 0.1 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Max tokens', 'ai-mcp' ), self::num( 'max_tokens', $s['max_tokens'], 16, 64000 ) ) );
 		echo '</div>';
-		echo self::field( __( 'System instructions (optional)', 'ai-mcp' ), self::area( 'system', '', 2 ) ); // phpcs:ignore
-		echo self::field( __( 'Prompt', 'ai-mcp' ), self::area( 'prompt', '', 7, __( 'Ask anything... (Ctrl+Enter to run)', 'ai-mcp' ) ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'System instructions (optional)', 'ai-mcp' ), self::area( 'system', '', 2 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Prompt', 'ai-mcp' ), self::area( 'prompt', '', 7, __( 'Ask anything... (Ctrl+Enter to run)', 'ai-mcp' ) ) ) );
 		echo '<div class="mx-row"><button type="button" class="button button-primary button-large" data-run>' . esc_html__( 'Run', 'ai-mcp' ) . '</button><span class="moshai-meta"></span></div>';
 		echo '<div class="moshai-output" hidden></div></div>';
 
 		echo '<div class="mx-card moshai-tool" data-tool="content" data-subpanel="article" hidden>';
-		echo self::field( __( 'Topic or working title', 'ai-mcp' ), self::text( 'topic', '', __( 'e.g. How to pick a logo color palette that converts', 'ai-mcp' ) ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Topic or working title', 'ai-mcp' ), self::text( 'topic', '', __( 'e.g. How to pick a logo color palette that converts', 'ai-mcp' ) ) ) );
 		echo '<div class="mx-grid mx-grid-3">';
-		echo self::field( __( 'Language', 'ai-mcp' ), self::text( 'language', 'English' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Language', 'ai-mcp' ), self::text( 'language', 'English' ) ) );
 		$tones = '<select name="tone">';
 		foreach ( array( 'Friendly and expert', 'Professional', 'Casual', 'Bold and opinionated', 'Playful', 'Academic' ) as $t ) {
 			$tones .= '<option>' . esc_html( $t ) . '</option>';
 		}
-		echo self::field( __( 'Tone', 'ai-mcp' ), $tones . '</select>' ); // phpcs:ignore
-		echo self::field( __( 'Length (words)', 'ai-mcp' ), self::num( 'words', 1200, 200, 5000, 100 ) ); // phpcs:ignore
-		echo self::field( __( 'Sections', 'ai-mcp' ), self::num( 'sections', 5, 2, 15 ) ); // phpcs:ignore
-		echo self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'provider', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'model', '' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Tone', 'ai-mcp' ), $tones . '</select>' ) );
+		MoshAI_Kses::out( self::field( __( 'Length (words)', 'ai-mcp' ), self::num( 'words', 1200, 200, 5000, 100 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Sections', 'ai-mcp' ), self::num( 'sections', 5, 2, 15 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'provider', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'model', '' ) ) );
 		echo '</div>';
-		echo self::field( __( 'Extra instructions (optional)', 'ai-mcp' ), self::area( 'extra', '', 2, __( 'Audience, keywords, call to action...', 'ai-mcp' ) ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Extra instructions (optional)', 'ai-mcp' ), self::area( 'extra', '', 2, __( 'Audience, keywords, call to action...', 'ai-mcp' ) ) ) );
 		echo '<div class="mx-row"><button type="button" class="button button-primary button-large" data-run>' . esc_html__( 'Write article', 'ai-mcp' ) . '</button><span class="moshai-meta"></span></div>';
 		echo '<div class="moshai-content-result" hidden><hr>';
 		echo '<div class="mx-field"><span class="mx-label">' . esc_html__( 'Title', 'ai-mcp' ) . '</span><input type="text" data-field="title"></div>';
@@ -505,16 +505,16 @@ class MoshAI_Admin {
 		echo '</div><div class="moshai-output" hidden></div></div>';
 
 		if ( ! MoshAI_Settings::has_media_ai() ) {
-			echo '<div class="mx-card mx-locked" data-subpanel="image" hidden><div class="mx-lock-icon"><span class="dashicons dashicons-lock"></span></div><h2>' . esc_html__( 'Images need OpenAI or Google Gemini', 'ai-mcp' ) . '</h2><p>' . esc_html__( 'Add an OpenAI key or a free Gemini key to generate images.', 'ai-mcp' ) . '</p><p>' . self::go( 'settings', __( 'Add a key', 'ai-mcp' ), 'button button-primary' ) . '</p></div>'; // phpcs:ignore
+			MoshAI_Kses::out( '<div class="mx-card mx-locked" data-subpanel="image" hidden><div class="mx-lock-icon"><span class="dashicons dashicons-lock"></span></div><h2>' . esc_html__( 'Images need OpenAI or Google Gemini', 'ai-mcp' ) . '</h2><p>' . esc_html__( 'Add an OpenAI key or a free Gemini key to generate images.', 'ai-mcp' ) . '</p><p>' . self::go( 'settings', __( 'Add a key', 'ai-mcp' ), 'button button-primary' ) . '</p></div>' );
 		} else {
 		echo '<div class="mx-card moshai-tool" data-tool="image" data-subpanel="image" hidden>';
-		echo self::field( __( 'Describe the image', 'ai-mcp' ), self::area( 'prompt', '', 3, __( 'Flat-lay of a designer desk with a laptop showing a logo sketch, soft daylight, minimal', 'ai-mcp' ) ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Describe the image', 'ai-mcp' ), self::area( 'prompt', '', 3, __( 'Flat-lay of a designer desk with a laptop showing a logo sketch, soft daylight, minimal', 'ai-mcp' ) ) ) );
 		$sizes = '<select name="size">';
 		foreach ( array( '1024x1024' => __( 'Square', 'ai-mcp' ), '1536x1024' => __( 'Landscape', 'ai-mcp' ), '1024x1536' => __( 'Portrait', 'ai-mcp' ), '1792x1024' => __( 'Wide (dall-e-3)', 'ai-mcp' ), '1024x1792' => __( 'Tall (dall-e-3)', 'ai-mcp' ) ) as $v => $l ) {
 			$sizes .= '<option value="' . esc_attr( $v ) . '">' . esc_html( $l . ' · ' . $v ) . '</option>';
 		}
-		echo '<div class="mx-grid mx-grid-3">' . self::field( __( 'Size', 'ai-mcp' ), $sizes . '</select>' ); // phpcs:ignore
-		echo self::field( __( 'Model', 'ai-mcp' ), '<input type="text" name="model" list="moshai-image-models" placeholder="' . esc_attr( $s['image_model'] ) . '">' ) . '</div>'; // phpcs:ignore
+		MoshAI_Kses::out( '<div class="mx-grid mx-grid-3">' . self::field( __( 'Size', 'ai-mcp' ), $sizes . '</select>' ) );
+		MoshAI_Kses::out( self::field( __( 'Model', 'ai-mcp' ), '<input type="text" name="model" list="moshai-image-models" placeholder="' . esc_attr( $s['image_model'] ) . '">' ) . '</div>' );
 		echo '<datalist id="moshai-image-models"><option value="gpt-image-1"></option><option value="gpt-image-1-mini"></option><option value="dall-e-3"></option></datalist>';
 		echo '<div class="mx-row"><button type="button" class="button button-primary button-large" data-run>' . esc_html__( 'Generate image', 'ai-mcp' ) . '</button><span class="mx-help">' . esc_html__( 'Saved to the Media Library with alt text.', 'ai-mcp' ) . '</span></div>';
 		echo '<div class="moshai-output" hidden></div><div class="moshai-gallery"></div></div>';
@@ -529,21 +529,21 @@ class MoshAI_Admin {
 		echo '<div class="mx-card mx-edit-col" data-fields>';
 		echo '<div class="mx-edit-head"><h2 data-edit-title></h2><code class="moshai-copy" data-shortcode></code></div><input type="hidden" name="id">';
 		echo '<div class="mx-grid mx-grid-2">';
-		echo self::field( __( 'Name', 'ai-mcp' ), self::text( 'name', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Button label', 'ai-mcp' ), self::text( 'button', '' ) ); // phpcs:ignore
-		echo self::field( __( 'ID for the shortcode', 'ai-mcp' ), self::text( 'slug', '', __( 'auto from name', 'ai-mcp' ) ), '', 'mx-new-only' ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Name', 'ai-mcp' ), self::text( 'name', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Button label', 'ai-mcp' ), self::text( 'button', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'ID for the shortcode', 'ai-mcp' ), self::text( 'slug', '', __( 'auto from name', 'ai-mcp' ) ), '', 'mx-new-only' ) );
 		echo '</div>';
-		echo self::field( __( 'Fields', 'ai-mcp' ), self::area( 'fields', '', 5, '', 'code' ), __( 'One per line: name|Label|type|option1,option2. Types: text, textarea, select, number, email, url.', 'ai-mcp' ) ); // phpcs:ignore
-		echo self::field( __( 'Prompt template', 'ai-mcp' ), self::area( 'prompt', '', 5 ), __( 'Use {name} to insert what the visitor typed in that field.', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Fields', 'ai-mcp' ), self::area( 'fields', '', 5, '', 'code' ), __( 'One per line: name|Label|type|option1,option2. Types: text, textarea, select, number, email, url.', 'ai-mcp' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Prompt template', 'ai-mcp' ), self::area( 'prompt', '', 5 ), __( 'Use {name} to insert what the visitor typed in that field.', 'ai-mcp' ) ) );
 		echo '<details class="mx-advanced"><summary>' . esc_html__( 'Advanced', 'ai-mcp' ) . '</summary>';
-		echo self::field( __( 'System instructions', 'ai-mcp' ), self::area( 'system', '', 2 ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'System instructions', 'ai-mcp' ), self::area( 'system', '', 2 ) ) );
 		echo '<div class="mx-grid mx-grid-4">';
-		echo self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'provider', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'model', '' ) ); // phpcs:ignore
-		echo self::field( __( 'Creativity', 'ai-mcp' ), self::num( 'temperature', 0.8, 0, 2, 0.1 ) ); // phpcs:ignore
-		echo self::field( __( 'Max tokens', 'ai-mcp' ), self::num( 'max_tokens', 1024, 16, 64000 ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'provider', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'model', '' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Creativity', 'ai-mcp' ), self::num( 'temperature', 0.8, 0, 2, 0.1 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Max tokens', 'ai-mcp' ), self::num( 'max_tokens', 1024, 16, 64000 ) ) );
 		echo '</div></details>';
-		echo self::toggle( 'guests', 1, __( 'Visitors who are not logged in can use it', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::toggle( 'guests', 1, __( 'Visitors who are not logged in can use it', 'ai-mcp' ) ) );
 		echo '<div class="mx-edit-actions"><button type="button" class="button button-primary button-large" data-save>' . esc_html__( 'Save form', 'ai-mcp' ) . '</button><button type="button" class="button-link button-link-delete" data-delete>' . esc_html__( 'Delete', 'ai-mcp' ) . '</button></div>';
 		echo '</div>';
 		echo '<aside class="mx-card mx-preview-col"><h2>' . esc_html__( 'Live test', 'ai-mcp' ) . '</h2><p class="mx-help">' . esc_html__( 'Uses the saved version.', 'ai-mcp' ) . '</p><div data-preview></div></aside>';
@@ -559,7 +559,7 @@ class MoshAI_Admin {
 		echo '<div class="mx-card"><h2>' . esc_html__( 'Teach the chatbot your site', 'ai-mcp' ) . '</h2><p>' . esc_html__( 'Indexes every published post, page and product so chatbots answer from your real content. Re-running replaces, never duplicates.', 'ai-mcp' ) . '</p>';
 		echo '<div class="mx-row"><button type="button" class="button button-primary button-large" data-kb-sync>' . esc_html__( 'Sync all content', 'ai-mcp' ) . '</button><span class="moshai-progress">' . ( $synced ? esc_html( sprintf( /* translators: %s time ago */ __( 'Last full sync %s ago', 'ai-mcp' ), human_time_diff( $synced ) ) ) : '' ) . '</span></div>';
 		echo '<div class="mx-progressbar" hidden><span></span></div>';
-		echo self::toggle( 'kb_autosync', $s['kb_autosync'], __( 'Keep it up to date automatically', 'ai-mcp' ), __( 'Re-indexes a post 30 seconds after you update it, removes it when trashed.', 'ai-mcp' ), 'data-instant' ); // phpcs:ignore
+		MoshAI_Kses::out( self::toggle( 'kb_autosync', $s['kb_autosync'], __( 'Keep it up to date automatically', 'ai-mcp' ), __( 'Re-indexes a post 30 seconds after you update it, removes it when trashed.', 'ai-mcp' ), 'data-instant' ) );
 		echo '<h3 class="mx-section">' . esc_html__( 'Test a question', 'ai-mcp' ) . '</h3><div class="mx-row"><input type="text" data-kb-query placeholder="' . esc_attr__( 'What is your refund policy?', 'ai-mcp' ) . '"><button type="button" class="button" data-kb-search>' . esc_html__( 'Search', 'ai-mcp' ) . '</button></div><div class="moshai-kb-hits"></div></div>';
 		echo '<div class="mx-card"><h2>' . esc_html__( 'Add custom knowledge', 'ai-mcp' ) . '</h2><p>' . esc_html__( 'FAQs, policies, pricing, opening hours... anything that is not on a page.', 'ai-mcp' ) . '</p>';
 		echo '<div class="mx-field"><span class="mx-label">' . esc_html__( 'Title', 'ai-mcp' ) . '</span><input type="text" data-kb-title></div>';
@@ -590,7 +590,7 @@ class MoshAI_Admin {
 			foreach ( $changes as $c ) {
 				$state = $c['blocked'] ? '<span class="mx-badge is-warn">' . esc_html__( 'Blocked', 'ai-mcp' ) . '</span> ' : ( $c['ok'] ? '' : '<span class="mx-badge is-off">' . esc_html__( 'Failed', 'ai-mcp' ) . '</span> ' );
 				$what  = $c['link'] ? '<a href="' . esc_url( $c['link'] ) . '">' . esc_html( $c['summary'] ) . '</a>' : esc_html( $c['summary'] );
-				echo '<tr data-source="' . esc_attr( $c['source'] ) . '" data-blocked="' . ( $c['blocked'] ? '1' : '0' ) . '"><td title="' . esc_attr( $c['date'] ) . '">' . esc_html( $c['ago'] ) . '</td><td>' . esc_html( $c['who'] ) . '</td><td>' . $state . $what . '</td><td>' . ( '[]' !== $c['args'] && '' !== $c['args'] ? '<details><summary>' . esc_html( $c['tool'] ) . '</summary><pre class="mx-code">' . esc_html( $c['args'] ) . '</pre></details>' : '<code>' . esc_html( $c['tool'] ) . '</code>' ) . '</td></tr>'; // phpcs:ignore
+				MoshAI_Kses::out( '<tr data-source="' . esc_attr( $c['source'] ) . '" data-blocked="' . ( $c['blocked'] ? '1' : '0' ) . '"><td title="' . esc_attr( $c['date'] ) . '">' . esc_html( $c['ago'] ) . '</td><td>' . esc_html( $c['who'] ) . '</td><td>' . $state . $what . '</td><td>' . ( '[]' !== $c['args'] && '' !== $c['args'] ? '<details><summary>' . esc_html( $c['tool'] ) . '</summary><pre class="mx-code">' . esc_html( $c['args'] ) . '</pre></details>' : '<code>' . esc_html( $c['tool'] ) . '</code>' ) . '</td></tr>' );
 			}
 			echo '</tbody></table></div>';
 		} else {
@@ -600,10 +600,10 @@ class MoshAI_Admin {
 		echo '<h2 class="mx-section">' . esc_html__( 'AI usage, last 30 days', 'ai-mcp' ) . '</h2>';
 
 		echo '<div class="mx-grid mx-grid-4">';
-		echo self::stat( __( 'Requests, 30 days', 'ai-mcp' ), number_format_i18n( (int) $tot['n'] ) ); // phpcs:ignore
-		echo self::stat( __( 'Tokens in', 'ai-mcp' ), number_format_i18n( (int) $tot['i'] ) ); // phpcs:ignore
-		echo self::stat( __( 'Tokens out', 'ai-mcp' ), number_format_i18n( (int) $tot['o'] ) ); // phpcs:ignore
-		echo self::stat( __( 'Images and embeddings', 'ai-mcp' ), number_format_i18n( (int) $tot['u'] ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::stat( __( 'Requests, 30 days', 'ai-mcp' ), number_format_i18n( (int) $tot['n'] ) ) );
+		MoshAI_Kses::out( self::stat( __( 'Tokens in', 'ai-mcp' ), number_format_i18n( (int) $tot['i'] ) ) );
+		MoshAI_Kses::out( self::stat( __( 'Tokens out', 'ai-mcp' ), number_format_i18n( (int) $tot['o'] ) ) );
+		MoshAI_Kses::out( self::stat( __( 'Images and embeddings', 'ai-mcp' ), number_format_i18n( (int) $tot['u'] ) ) );
 		echo '</div>';
 
 		$max = 1;
@@ -674,9 +674,9 @@ class MoshAI_Admin {
 		echo '<div class="mx-settings mx-settings-single" data-settings data-mcp-panel><div class="mx-settings-body">';
 
 		// 1. Connection.
-		echo '<div class="mx-card mx-mcp-status"><div class="mx-mcp-head"><div><h2>' . esc_html__( 'Connection', 'ai-mcp' ) . '</h2><div class="mx-mcp-big">' . self::mcp_pill() . '</div></div>'; // phpcs:ignore
+		MoshAI_Kses::out( '<div class="mx-card mx-mcp-status"><div class="mx-mcp-head"><div><h2>' . esc_html__( 'Connection', 'ai-mcp' ) . '</h2><div class="mx-mcp-big">' . self::mcp_pill() . '</div></div>' );
 		echo '<button type="button" class="button mx-danger" data-mcp-disconnect' . ( $has_tok ? '' : ' hidden' ) . '><span class="dashicons dashicons-dismiss"></span>' . esc_html__( 'Disconnect everything', 'ai-mcp' ) . '</button></div>';
-		echo self::toggle( 'mcp_enabled', $s['mcp_enabled'], __( 'MCP server on', 'ai-mcp' ), __( 'Lets Claude, ChatGPT, Cursor, ClickUp and other AI apps work on this site with their own AI. No API key needed here.', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::toggle( 'mcp_enabled', $s['mcp_enabled'], __( 'MCP server on', 'ai-mcp' ), __( 'Lets Claude, ChatGPT, Cursor, ClickUp and other AI apps work on this site with their own AI. No API key needed here.', 'ai-mcp' ) ) );
 		echo '<div class="mx-table-wrap"><table class="widefat mx-table"><thead><tr><th>' . esc_html__( 'Client', 'ai-mcp' ) . '</th><th>' . esc_html__( 'Status', 'ai-mcp' ) . '</th><th>' . esc_html__( 'Last seen', 'ai-mcp' ) . '</th><th>' . esc_html__( 'Changes (30 days)', 'ai-mcp' ) . '</th><th>' . esc_html__( 'First seen', 'ai-mcp' ) . '</th></tr></thead><tbody data-clients>';
 		$clients = MoshAI_Activity::clients();
 		if ( $clients ) {
@@ -708,17 +708,17 @@ class MoshAI_Admin {
 
 		// 3. Permissions.
 		echo '<div class="mx-card"><h2>' . esc_html__( 'What AI can change', 'ai-mcp' ) . '</h2><p class="mx-help">' . esc_html__( 'Applies to MCP apps and the dashboard AI Agent. Reading is always allowed. Switched-off areas disappear from the AI\'s tool list.', 'ai-mcp' ) . '</p>';
-		echo self::toggle( 'mcp_allow_writes', $s['mcp_allow_writes'], __( 'MCP apps can make changes', 'ai-mcp' ), __( 'Off = read-only: MCP apps can look, but not touch anything.', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::toggle( 'mcp_allow_writes', $s['mcp_allow_writes'], __( 'MCP apps can make changes', 'ai-mcp' ), __( 'Off = read-only: MCP apps can look, but not touch anything.', 'ai-mcp' ) ) );
 		echo '<div class="mx-grid mx-grid-2">';
 		foreach ( MoshAI_MCP::scopes() as $scope => $label ) {
-			echo self::toggle( 'perm_' . $scope, $s[ 'perm_' . $scope ], $label ); // phpcs:ignore
+			MoshAI_Kses::out( self::toggle( 'perm_' . $scope, $s[ 'perm_' . $scope ], $label ) );
 		}
 		echo '</div>';
 		echo '<div class="mx-hardlimits"><strong><span class="dashicons dashicons-shield"></span>' . esc_html__( 'Always blocked, whatever you switch on:', 'ai-mcp' ) . '</strong> ' . esc_html__( 'creating or promoting administrators, editing admin accounts, login credentials (application passwords), changing the site URL or admin email, reading secrets and API keys, switching off or deleting AI MCP, editing this activity log.', 'ai-mcp' ) . '</div></div>';
 
 		// 4. Security.
 		echo '<div class="mx-card"><h2>' . esc_html__( 'Security', 'ai-mcp' ) . '</h2><div class="mx-grid mx-grid-2">';
-		echo self::field(
+		MoshAI_Kses::out( self::field(
 			__( 'Run as', 'ai-mcp' ),
 			wp_dropdown_users(
 				array(
@@ -731,10 +731,10 @@ class MoshAI_Admin {
 				)
 			),
 			__( 'Changes are made as this administrator.', 'ai-mcp' )
-		); // phpcs:ignore
-		echo self::field( __( 'Only allow these IPs (optional)', 'ai-mcp' ), self::area( 'mcp_ip_allow', $s['mcp_ip_allow'], 3, "203.0.113.7\n2001:db8::/32" ), __( 'One IP or CIDR range per line. Empty = any IP with the token.', 'ai-mcp' ) ); // phpcs:ignore
+		) );
+		MoshAI_Kses::out( self::field( __( 'Only allow these IPs (optional)', 'ai-mcp' ), self::area( 'mcp_ip_allow', $s['mcp_ip_allow'], 3, "203.0.113.7\n2001:db8::/32" ), __( 'One IP or CIDR range per line. Empty = any IP with the token.', 'ai-mcp' ) ) );
 		echo '</div>';
-		echo self::toggle( 'mcp_allow_query', $s['mcp_allow_query'], __( 'Allow the token in the URL (?token=)', 'ai-mcp' ), __( 'Less safe: URLs end up in server logs. Only turn on if your AI app cannot send an Authorization header.', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::toggle( 'mcp_allow_query', $s['mcp_allow_query'], __( 'Allow the token in the URL (?token=)', 'ai-mcp' ), __( 'Less safe: URLs end up in server logs. Only turn on if your AI app cannot send an Authorization header.', 'ai-mcp' ) ) );
 		echo '<ul class="mx-checks"><li>' . esc_html__( 'Brute-force lockout: 10 wrong tokens in 15 minutes blocks that IP for an hour.', 'ai-mcp' ) . '</li><li>' . esc_html__( 'Requests from other websites in a browser are refused (stops phishing pages and DNS-rebinding tricks).', 'ai-mcp' ) . '</li><li>' . esc_html__( 'The AI is told to treat website content as data and to ignore instructions hidden in posts, comments, orders or emails.', 'ai-mcp' ) . '</li><li>' . esc_html__( 'Every change and every blocked attempt lands in the activity log.', 'ai-mcp' ) . '</li></ul></div>';
 
 		echo '</div>';
@@ -782,44 +782,44 @@ class MoshAI_Admin {
 		foreach ( MoshAI_Providers::custom_presets() as $k => $pr ) {
 			$opts .= '<option value="' . esc_attr( $k ) . '" data-name="' . esc_attr( $pr[0] ) . '" data-url="' . esc_attr( $pr[1] ) . '" data-model="' . esc_attr( $pr[2] ) . '">' . esc_html( $pr[0] ) . '</option>';
 		}
-		echo self::field( __( 'Preset', 'ai-mcp' ), $opts . '</select>' ); // phpcs:ignore
-		echo self::field( __( 'Name', 'ai-mcp' ), self::text( 'custom_name', $s['custom_name'], 'DeepSeek' ) ); // phpcs:ignore
-		echo self::field( __( 'API URL', 'ai-mcp' ), self::text( 'custom_url', $s['custom_url'], 'https://api.example.com/v1' ) ); // phpcs:ignore
-		echo self::field( __( 'Model', 'ai-mcp' ), '<input type="text" name="custom_model" value="' . esc_attr( $s['custom_model'] ) . '" list="moshai-models-custom" placeholder="model-name">' ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Preset', 'ai-mcp' ), $opts . '</select>' ) );
+		MoshAI_Kses::out( self::field( __( 'Name', 'ai-mcp' ), self::text( 'custom_name', $s['custom_name'], 'DeepSeek' ) ) );
+		MoshAI_Kses::out( self::field( __( 'API URL', 'ai-mcp' ), self::text( 'custom_url', $s['custom_url'], 'https://api.example.com/v1' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Model', 'ai-mcp' ), '<input type="text" name="custom_model" value="' . esc_attr( $s['custom_model'] ) . '" list="moshai-models-custom" placeholder="model-name">' ) );
 		echo '</div><div class="mx-row"><input type="password" name="custom_key" data-key-input placeholder="' . esc_attr( '' !== $keys['custom']['mask'] ? $keys['custom']['mask'] : __( 'API key (leave empty for Ollama / LM Studio)', 'ai-mcp' ) ) . '" autocomplete="new-password" spellcheck="false"><button type="button" class="button" data-test-key="custom">' . esc_html__( 'Test and save', 'ai-mcp' ) . '</button></div>';
 		echo '<button type="button" class="button-link button-link-delete mx-remove-key" data-remove-key="custom"' . ( $on ? '' : ' hidden' ) . '>' . esc_html__( 'Disconnect', 'ai-mcp' ) . '</button></div>';
 		echo '</div></div>';
 
 		echo '<div class="mx-card" id="mx-s-defaults"><h2>' . esc_html__( 'Defaults', 'ai-mcp' ) . '</h2><p class="mx-help">' . esc_html__( 'Used everywhere unless a chatbot or form picks its own.', 'ai-mcp' ) . '</p><div class="mx-grid mx-grid-2">';
-		echo self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'default_provider', $s['default_provider'], false ) ); // phpcs:ignore
-		echo self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'default_model', $s['default_model'], $s['default_provider'] ), __( 'Test a key to load its full model list.', 'ai-mcp' ) ); // phpcs:ignore
-		echo self::field( __( 'Creativity (temperature)', 'ai-mcp' ), self::num( 'temperature', $s['temperature'], 0, 2, 0.1 ), __( '0 = precise, 1 = creative.', 'ai-mcp' ) ); // phpcs:ignore
-		echo self::field( __( 'Max answer tokens', 'ai-mcp' ), self::num( 'max_tokens', $s['max_tokens'], 16, 64000 ) ); // phpcs:ignore
-		echo self::field( __( 'Image model', 'ai-mcp' ), '<input type="text" name="image_model" value="' . esc_attr( $s['image_model'] ) . '" list="moshai-image-models">' ); // phpcs:ignore
-		echo self::field( __( 'Embedding model', 'ai-mcp' ), '<input type="text" name="embedding_model" value="' . esc_attr( $s['embedding_model'] ) . '" list="moshai-emb-models"><datalist id="moshai-emb-models"><option value="text-embedding-3-small"></option><option value="text-embedding-3-large"></option></datalist>', __( 'Changing it means re-syncing knowledge.', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Provider', 'ai-mcp' ), self::provider_select( 'default_provider', $s['default_provider'], false ) ) );
+		MoshAI_Kses::out( self::field( __( 'Model', 'ai-mcp' ), self::model_input( 'default_model', $s['default_model'], $s['default_provider'] ), __( 'Test a key to load its full model list.', 'ai-mcp' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Creativity (temperature)', 'ai-mcp' ), self::num( 'temperature', $s['temperature'], 0, 2, 0.1 ), __( '0 = precise, 1 = creative.', 'ai-mcp' ) ) );
+		MoshAI_Kses::out( self::field( __( 'Max answer tokens', 'ai-mcp' ), self::num( 'max_tokens', $s['max_tokens'], 16, 64000 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Image model', 'ai-mcp' ), '<input type="text" name="image_model" value="' . esc_attr( $s['image_model'] ) . '" list="moshai-image-models">' ) );
+		MoshAI_Kses::out( self::field( __( 'Embedding model', 'ai-mcp' ), '<input type="text" name="embedding_model" value="' . esc_attr( $s['embedding_model'] ) . '" list="moshai-emb-models"><datalist id="moshai-emb-models"><option value="text-embedding-3-small"></option><option value="text-embedding-3-large"></option></datalist>', __( 'Changing it means re-syncing knowledge.', 'ai-mcp' ) ) );
 		echo '</div></div>';
 
 		echo '<div class="mx-card" id="mx-s-limits"><h2>' . esc_html__( 'Limits and safety', 'ai-mcp' ) . '</h2><p class="mx-help">' . esc_html__( 'Protects your API bill from abuse. Admins are never limited.', 'ai-mcp' ) . '</p>';
-		echo self::toggle( 'limits_enabled', $s['limits_enabled'], __( 'Daily limits for chatbots and forms', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::toggle( 'limits_enabled', $s['limits_enabled'], __( 'Daily limits for chatbots and forms', 'ai-mcp' ) ) );
 		echo '<div class="mx-grid mx-grid-3">';
-		echo self::field( __( 'Per visitor, 24h', 'ai-mcp' ), self::num( 'limit_guest', $s['limit_guest'], 0, 100000 ) ); // phpcs:ignore
-		echo self::field( __( 'Per logged-in user, 24h', 'ai-mcp' ), self::num( 'limit_user', $s['limit_user'], 0, 100000 ) ); // phpcs:ignore
-		echo self::field( __( 'Per minute (burst)', 'ai-mcp' ), self::num( 'rate_per_minute', $s['rate_per_minute'], 0, 1000 ), __( '0 = off', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Per visitor, 24h', 'ai-mcp' ), self::num( 'limit_guest', $s['limit_guest'], 0, 100000 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Per logged-in user, 24h', 'ai-mcp' ), self::num( 'limit_user', $s['limit_user'], 0, 100000 ) ) );
+		MoshAI_Kses::out( self::field( __( 'Per minute (burst)', 'ai-mcp' ), self::num( 'rate_per_minute', $s['rate_per_minute'], 0, 1000 ), __( '0 = off', 'ai-mcp' ) ) );
 		echo '</div>';
-		echo self::field( __( 'Message when the limit is hit', 'ai-mcp' ), self::text( 'limit_message', $s['limit_message'] ) ); // phpcs:ignore
-		echo self::toggle( 'moderation', $s['moderation'], __( 'Block abusive messages', 'ai-mcp' ), __( 'Free OpenAI moderation, needs an OpenAI key.', 'ai-mcp' ) ); // phpcs:ignore
-		echo self::toggle( 'log_discussions', $s['log_discussions'], __( 'Save chat conversations', 'ai-mcp' ), __( 'Mention it in your privacy policy.', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Message when the limit is hit', 'ai-mcp' ), self::text( 'limit_message', $s['limit_message'] ) ) );
+		MoshAI_Kses::out( self::toggle( 'moderation', $s['moderation'], __( 'Block abusive messages', 'ai-mcp' ), __( 'Free OpenAI moderation, needs an OpenAI key.', 'ai-mcp' ) ) );
+		MoshAI_Kses::out( self::toggle( 'log_discussions', $s['log_discussions'], __( 'Save chat conversations', 'ai-mcp' ), __( 'Mention it in your privacy policy.', 'ai-mcp' ) ) );
 		echo '</div>';
 
 		echo '<div class="mx-card" id="mx-s-editor"><h2>' . esc_html__( 'Editor and SEO', 'ai-mcp' ) . '</h2>';
-		echo self::toggle( 'editor_assistant', $s['editor_assistant'], __( 'AI Assistant box on posts, pages and products', 'ai-mcp' ), __( 'Titles, excerpts, SEO descriptions, tags, full content, product copy.', 'ai-mcp' ) ); // phpcs:ignore
-		echo self::toggle( 'meta_description', $s['meta_description'], __( 'Meta description field', 'ai-mcp' ), __( 'Printed in the page head. Skipped automatically when Yoast, Rank Math, AIOSEO or SEOPress is active.', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::toggle( 'editor_assistant', $s['editor_assistant'], __( 'AI Assistant box on posts, pages and products', 'ai-mcp' ), __( 'Titles, excerpts, SEO descriptions, tags, full content, product copy.', 'ai-mcp' ) ) );
+		MoshAI_Kses::out( self::toggle( 'meta_description', $s['meta_description'], __( 'Meta description field', 'ai-mcp' ), __( 'Printed in the page head. Skipped automatically when Yoast, Rank Math, AIOSEO or SEOPress is active.', 'ai-mcp' ) ) );
 		echo '</div>';
 
 		echo '<div class="mx-card" id="mx-s-data"><h2>' . esc_html__( 'Data', 'ai-mcp' ) . '</h2><div class="mx-grid mx-grid-2">';
-		echo self::field( __( 'Keep logs and conversations for (days)', 'ai-mcp' ), self::num( 'retention_days', $s['retention_days'], 0, 3650 ), __( 'Older entries are deleted daily. 0 = keep forever.', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::field( __( 'Keep logs and conversations for (days)', 'ai-mcp' ), self::num( 'retention_days', $s['retention_days'], 0, 3650 ), __( 'Older entries are deleted daily. 0 = keep forever.', 'ai-mcp' ) ) );
 		echo '</div>';
-		echo self::toggle( 'clean_uninstall', $s['clean_uninstall'], __( 'Delete all AI MCP data when the plugin is deleted', 'ai-mcp' ) ); // phpcs:ignore
+		MoshAI_Kses::out( self::toggle( 'clean_uninstall', $s['clean_uninstall'], __( 'Delete all AI MCP data when the plugin is deleted', 'ai-mcp' ) ) );
 		echo '</div>';
 
 		echo '</div>';
