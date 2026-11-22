@@ -107,7 +107,7 @@ class MoshAI_Agent {
 
 	public static function handle( WP_REST_Request $r ) {
 		if ( function_exists( 'set_time_limit' ) ) {
-			@set_time_limit( 120 ); // phpcs:ignore
+			set_time_limit( 120 );
 		}
 		$state = self::load();
 
