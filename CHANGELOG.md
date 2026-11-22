@@ -1,5 +1,11 @@
 # AI MCP by WEBMOSH: Changelog
 
+## v1.0.2
+
+- **Auto-updates from GitHub**: AI MCP now updates like any wordpress.org plugin. New releases show up on the Plugins page and in Dashboard > Updates, and auto-updates are switched on by default (you can turn them off on the Plugins page).
+- **Verified downloads**: every update zip is checked against GitHub's SHA-256 checksum before it installs, and it only ever comes from this repo.
+- **Self-update tools**: MCP apps and the AI Agent can check for and install AI MCP updates (this plugin only).
+
 ## v1.0.1
 
 - **Elementor MCP switch**: the AI can now turn Elementor MCP on or off. It's a site setting, not an Elementor experiment, so it was missing from the features list before.

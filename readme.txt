@@ -4,7 +4,7 @@ Tags: ai, chatbot, openai, claude, gemini, mcp, content generator, embeddings
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 
 AI for WordPress: chatbots, content and image generation, AI forms, knowledge base, editor assistant, usage limits and an MCP server.
@@ -38,6 +38,11 @@ Filters: moshai_models, moshai_query_args, moshai_query_result, moshai_show_popu
 JS: window.MoshAI.boot() re-scans the page for chatbots and forms.
 
 == Changelog ==
+
+= 1.0.2 =
+* Automatic updates from the official GitHub releases, through the normal WordPress updater (Plugins page, Dashboard > Updates, auto-updates). Every update file is checked against GitHub's SHA-256 checksum.
+* Auto-updates are switched on for AI MCP once; turn them off on the Plugins page if you prefer.
+* New MCP tools: wp_get_ai_mcp_update and wp_install_plugin_update (AI MCP only, official repo only).
 
 = 1.0.1 =
 * AI can now turn Elementor MCP on or off (it is a site setting, not an experiment, so it was missing from the Elementor features list).
