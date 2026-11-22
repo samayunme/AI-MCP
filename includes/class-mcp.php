@@ -58,8 +58,11 @@ class MoshAI_MCP {
 			return $ip === $rule;
 		}
 		list( $sub, $bits ) = explode( '/', $rule, 2 );
-		$ipb  = @inet_pton( $ip ); // phpcs:ignore
-		$subb = @inet_pton( $sub ); // phpcs:ignore
+		if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) || ! filter_var( $sub, FILTER_VALIDATE_IP ) ) {
+			return false;
+		}
+		$ipb  = inet_pton( $ip );
+		$subb = inet_pton( $sub );
 		if ( false === $ipb || false === $subb || strlen( $ipb ) !== strlen( $subb ) ) {
 			return false;
 		}
