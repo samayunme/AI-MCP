@@ -180,6 +180,6 @@ class MoshAI_Chatbots {
 		if ( ! $bot || ( empty( $bot['guests'] ) && ! is_user_logged_in() ) ) {
 			return;
 		}
-		echo self::render( $bot, true ); // phpcs:ignore WordPress.Security.EscapeOutput
+		MoshAI_Kses::out( self::render( $bot, true ) );
 	}
 }
