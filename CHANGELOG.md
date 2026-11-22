@@ -1,9 +1,14 @@
 # AI MCP by WEBMOSH: Changelog
 
+## v1.0.1
+
+- **Elementor MCP switch**: the AI can now turn Elementor MCP on or off. It's a site setting, not an Elementor experiment, so it was missing from the features list before.
+- **WooCommerce features**: new tools to list and switch WooCommerce features, including MCP integration.
+
 ## v1.0.0 (first release)
 
 ### Install
-Download **ai-mcp-1.0.0.zip** from the Releases page, then in WordPress go to **Plugins > Add New > Upload Plugin**, pick the zip and activate. Don't use GitHub's green "Download ZIP" button, it names the folder wrong.
+Download the latest **ai-mcp-x.x.x.zip** from the Releases page, then in WordPress go to **Plugins > Add New > Upload Plugin**, pick the zip and activate. Don't use GitHub's green "Download ZIP" button, it names the folder wrong.
 
 ### Features
 - **AI Agent**: chat with your site in wp-admin. The AI posts, edits pages and Elementor, manages orders, refunds, stock, products, coupons, customers, users, comments, plugins and settings. Optional "ask before making changes" mode.

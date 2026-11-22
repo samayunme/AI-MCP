@@ -4,7 +4,7 @@ Tags: ai, chatbot, openai, claude, gemini, mcp, content generator, embeddings
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 
 AI for WordPress: chatbots, content and image generation, AI forms, knowledge base, editor assistant, usage limits and an MCP server.
@@ -38,6 +38,10 @@ Filters: moshai_models, moshai_query_args, moshai_query_result, moshai_show_popu
 JS: window.MoshAI.boot() re-scans the page for chatbots and forms.
 
 == Changelog ==
+
+= 1.0.1 =
+* AI can now turn Elementor MCP on or off (it is a site setting, not an experiment, so it was missing from the Elementor features list).
+* New tools: wc_list_features and wc_set_feature for WooCommerce features such as MCP integration.
 
 = 1.0.0 =
 * First public release.
