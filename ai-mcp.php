@@ -1,29 +1,28 @@
 <?php
 /**
  * Plugin Name:       AI MCP
- * Plugin URI:        https://webmosh.com
+ * Plugin URI:        https://github.com/samayunme/AI-MCP-By-WEBMOSH
  * Description:       AI for WordPress: chatbots, AI playground, content and image generation, AI forms, knowledge base (embeddings), editor and WooCommerce assistant, discussions log, usage limits and a built-in MCP server. Works with OpenAI, Anthropic (Claude), Google Gemini, OpenRouter and any OpenAI-compatible API.
- * Version:           1.0.2
- * Requires at least: 6.0
+ * Version:           1.0.3
+ * Requires at least: 6.2
  * Requires PHP:      7.4
  * Author:            WEBMOSH
  * Author URI:        https://webmosh.com
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       ai-mcp
- * Update URI:        https://github.com/samayunme/AI-MCP-By-WEBMOSH
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MOSHAI_VERSION', '1.0.2' );
+define( 'MOSHAI_VERSION', '1.0.3' );
 define( 'MOSHAI_FILE', __FILE__ );
 define( 'MOSHAI_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MOSHAI_URL', plugin_dir_url( __FILE__ ) );
 
-foreach ( array( 'settings', 'db', 'providers', 'core', 'chatbots', 'forms', 'rest', 'mcp', 'activity', 'tools', 'switches', 'updater', 'agent', 'editor', 'admin' ) as $moshai_part ) {
+foreach ( array( 'kses', 'settings', 'db', 'providers', 'core', 'chatbots', 'forms', 'rest', 'mcp', 'activity', 'tools', 'switches', 'agent', 'editor', 'admin' ) as $moshai_part ) {
 	require_once MOSHAI_DIR . 'includes/class-' . $moshai_part . '.php';
 }
 unset( $moshai_part );
@@ -48,7 +47,6 @@ function moshai_boot() {
 	MoshAI_MCP::init();
 	MoshAI_Tools::init();
 	MoshAI_Switches::init();
-	MoshAI_Updater::init();
 	MoshAI_Agent::init();
 	MoshAI_Editor::init();
 	add_action( 'admin_bar_menu', array( 'MoshAI_Admin', 'admin_bar' ), 90 );

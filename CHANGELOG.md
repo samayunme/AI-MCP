@@ -1,5 +1,11 @@
 # AI MCP by WEBMOSH: Changelog
 
+## v1.0.3
+
+- **WordPress.org ready**: the GitHub auto-updater is gone. Updates will come through WordPress.org once the plugin is listed.
+- **Safer output**: every admin screen and the chatbot container are escaped with wp_kses().
+- **Cleaner IP allow list checks** and other review fixes. Requires WordPress 6.2+.
+
 ## v1.0.2
 
 - **Auto-updates from GitHub**: AI MCP now updates like any wordpress.org plugin. New releases show up on the Plugins page and in Dashboard > Updates, and auto-updates are switched on by default (you can turn them off on the Plugins page).
