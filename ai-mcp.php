@@ -3,7 +3,7 @@
  * Plugin Name:       AI MCP
  * Plugin URI:        https://github.com/samayunme/AI-MCP-By-WEBMOSH
  * Description:       AI for WordPress: chatbots, AI playground, content and image generation, AI forms, knowledge base (embeddings), editor and WooCommerce assistant, discussions log, usage limits and a built-in MCP server. Works with OpenAI, Anthropic (Claude), Google Gemini, OpenRouter and any OpenAI-compatible API.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Requires at least: 6.2
  * Requires PHP:      7.4
  * Author:            WEBMOSH
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MOSHAI_VERSION', '1.0.3' );
+define( 'MOSHAI_VERSION', '1.0.4' );
 define( 'MOSHAI_FILE', __FILE__ );
 define( 'MOSHAI_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MOSHAI_URL', plugin_dir_url( __FILE__ ) );

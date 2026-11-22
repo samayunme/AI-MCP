@@ -1,5 +1,9 @@
 # AI MCP by WEBMOSH: Changelog
 
+## v1.0.4
+
+- **Fixed**: switching WooCommerce features on or off failed on WooCommerce 11 (it called a method WooCommerce made private).
+
 ## v1.0.3
 
 - **WordPress.org ready**: the GitHub auto-updater is gone. Updates will come through WordPress.org once the plugin is listed.

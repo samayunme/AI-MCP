@@ -150,7 +150,7 @@ class MoshAI_Switches {
 	private static function woo_features() {
 		$out = array();
 		$c   = self::woo_controller();
-		if ( $c && method_exists( $c, 'get_features' ) ) {
+		if ( $c && is_callable( array( $c, 'get_features' ) ) ) {
 			try {
 				$feats = (array) $c->get_features( true, true );
 			} catch ( \Throwable $e ) {
@@ -191,10 +191,11 @@ class MoshAI_Switches {
 		$opt    = self::woo_option( $id );
 		$before = 'yes' === get_option( $opt );
 		$c      = self::woo_controller();
-		if ( $c && method_exists( $c, 'change_feature_enable' ) ) {
-			if ( method_exists( $c, 'feature_exists' ) && ! $c->feature_exists( $id ) ) {
-				return new WP_Error( 'not_found', 'Unknown WooCommerce feature. Use wc_list_features for exact ids.' );
-			}
+		$known = wp_list_pluck( self::woo_features(), 'id' );
+		if ( $known && ! in_array( $id, $known, true ) ) {
+			return new WP_Error( 'not_found', 'Unknown WooCommerce feature. Use wc_list_features for exact ids.' );
+		}
+		if ( $c && is_callable( array( $c, 'change_feature_enable' ) ) ) {
 			try {
 				$c->change_feature_enable( $id, $enable );
 			} catch ( \Throwable $e ) {

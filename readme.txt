@@ -4,7 +4,7 @@ Tags: ai, chatbot, mcp, ai agent, content generator
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,9 @@ No. MCP is off until you turn it on and create a token. You choose which areas A
 Only if you turn on "Delete all AI MCP data when the plugin is deleted" in Settings.
 
 == Changelog ==
+
+= 1.0.4 =
+* Fixed: switching WooCommerce features on or off failed on WooCommerce 11.
 
 = 1.0.3 =
 * Prepared for WordPress.org: updates now come through WordPress.org only.
