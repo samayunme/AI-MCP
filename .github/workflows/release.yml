@@ -1,0 +1,26 @@
+name: Release
+on:
+  push:
+    branches: [main]
+    paths: ['ai-mcp.php', '.github/workflows/release.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read version
+        id: v
+        run: echo "version=$(grep -m1 -oP 'Version:\s*\K[0-9.]+' ai-mcp.php)" >> "$GITHUB_OUTPUT"
+      - name: Build zip and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VER: ${{ steps.v.outputs.version }}
+        run: |
+          if gh release view "v$VER" >/dev/null 2>&1; then echo "v$VER already released"; exit 0; fi
+          mkdir -p build/ai-mcp
+          rsync -a --exclude='.git' --exclude='.github' --exclude='build' --exclude='README.md' --exclude='CHANGELOG.md' ./ build/ai-mcp/
+          cd build && zip -rq "ai-mcp-$VER.zip" ai-mcp && cd ..
+          gh release create "v$VER" "build/ai-mcp-$VER.zip" --title "AI MCP v$VER" --notes-file CHANGELOG.md --target "$GITHUB_SHA"
