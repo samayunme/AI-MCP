@@ -28,7 +28,7 @@ WordPress plugin that connects AI to your website two ways:
 
 ## Install
 
-1. Download this repository and rename the folder to `ai-mcp` (or zip the files inside an `ai-mcp` folder).
+1. Download **ai-mcp-1.0.0.zip** from the [Releases](../../releases) page. Don't use the green Code > Download ZIP button, it names the folder wrong.
 2. WordPress > Plugins > Add New > Upload Plugin, then activate.
 3. Open **AI MCP** in the admin menu: connect an AI under Settings, or switch on MCP and create a token.
 

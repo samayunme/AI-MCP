@@ -1,18 +1,19 @@
 # AI MCP by WEBMOSH: Changelog
 
-## v1.4.0
+## v1.0.0 (first release)
 
 ### Install
-Download **ai-mcp-1.4.0.zip** from the Releases page, then in WordPress go to **Plugins > Add New > Upload Plugin**, pick the zip and activate. Don't use GitHub's "Download ZIP" button, it names the folder wrong.
+Download **ai-mcp-1.0.0.zip** from the Releases page, then in WordPress go to **Plugins > Add New > Upload Plugin**, pick the zip and activate. Don't use GitHub's green "Download ZIP" button, it names the folder wrong.
 
-### What's new
-- **Connected indicator** in the MCP tab and the admin header when an MCP client is connected.
-- **Activity log** on Home: every change made by MCP or the AI agent, with who, what and when.
-- **WEBMOSH branding**: new logo and a color theme taken from it.
-- **API features locked** until an AI provider key is connected.
-- **Others AI** provider: plug in any OpenAI-compatible endpoint.
-- **Full site control** for MCP and the agent: Elementor, plugin settings, turning plugin features on or off.
-- **Hardened security**: hashed access tokens, nonce and capability checks everywhere, rate limiting and stricter input sanitizing.
+### Features
+- **AI Agent**: chat with your site in wp-admin. The AI posts, edits pages and Elementor, manages orders, refunds, stock, products, coupons, customers, users, comments, plugins and settings. Optional "ask before making changes" mode.
+- **MCP server** with its own menu tab: connect Claude, ChatGPT, Cursor or ClickUp. 50+ tools, live "connected" status in the MCP tab and the header.
+- **Providers**: OpenAI, Anthropic (Claude), Google Gemini, OpenRouter and Others (any OpenAI-compatible API).
+- **Chatbots, knowledge base, playground, content and image generator, AI forms, editor and WooCommerce assistant.**
+- **AI features stay locked** until an AI provider is connected.
+- **Activity log** on Home: every change made by MCP or the AI agent.
+- **Security**: hashed access tokens, brute-force lockout, IP allow list, read-only switch, per-area permissions, prompt-injection guard, hard blocks on admin-level actions, "Disconnect everything" button.
+- **WEBMOSH branding** and color theme.
 
 ### Requirements
 WordPress 6.0+, PHP 7.4+. WooCommerce and Elementor are optional.
