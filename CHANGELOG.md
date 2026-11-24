@@ -1,14 +1,18 @@
 # AI MCP by WEBMOSH: Changelog
 
+## v1.0.5
+
+- **Auto-updates from GitHub are back**: AI MCP is distributed from GitHub and webmosh.com, so new releases show up on the Plugins page and install automatically again. Every update zip is checked against GitHub's SHA-256 checksum and only ever comes from this repo.
+- **Self-update tools are back**: MCP apps and the AI Agent can check for and install AI MCP updates (this plugin only).
+
 ## v1.0.4
 
 - **Fixed**: switching WooCommerce features on or off failed on WooCommerce 11 (it called a method WooCommerce made private).
 
 ## v1.0.3
 
-- **WordPress.org ready**: the GitHub auto-updater is gone. Updates will come through WordPress.org once the plugin is listed.
 - **Safer output**: every admin screen and the chatbot container are escaped with wp_kses().
-- **Cleaner IP allow list checks** and other review fixes. Requires WordPress 6.2+.
+- **Cleaner IP allow list checks** and other code fixes. Requires WordPress 6.2+.
 
 ## v1.0.2
 

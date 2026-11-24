@@ -4,7 +4,7 @@ Tags: ai, chatbot, mcp, ai agent, content generator
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,7 @@ AI MCP brings AI into WordPress and lets AI apps work on your site safely.
 * **MCP server**: connect Claude, ChatGPT, Cursor, ClickUp or any MCP client. 50+ tools for posts, pages, Elementor, WooCommerce orders, stock and products, users, comments, plugins and settings.
 * **AI Agent**: chat with your site in wp-admin and let the connected AI do the work, with an optional "ask before making changes" mode.
 * **Audit log and security**: every AI change is logged. Hashed access tokens, brute-force lockout, IP allow list, read-only switch, per-area permissions, and hard blocks on admin-level actions (creating administrators, changing the site URL or admin email, creating login credentials, switching AI MCP off).
+* **Automatic updates**: new versions come straight from the official GitHub releases through the normal WordPress updater, checksum-verified.
 
 Nothing calls an AI service until you add an API key or connect an MCP client yourself.
 
@@ -38,7 +39,7 @@ JavaScript: window.MoshAI.boot() re-scans the page for chatbots and forms.
 
 == External services ==
 
-AI MCP connects to the third-party services below. It only contacts a service after you add an API key (or endpoint) for it, and only the provider you choose for a feature is used.
+AI MCP connects to the third-party services below. It only contacts an AI service after you add an API key (or endpoint) for it, and only the provider you choose for a feature is used.
 
 = OpenAI =
 Used for chat, content, images, embeddings (knowledge base) and optional moderation when OpenAI is selected or the moderation option is on. Sent: the prompt or chat messages, the system instructions, and for the knowledge base the text of the content being indexed. Sent each time a feature runs.
@@ -62,12 +63,16 @@ When you choose "Others", requests go to the endpoint URL you enter (for example
 = Model lists =
 When you open Settings with a key saved, AI MCP asks that provider for its list of available models. Only your API key is sent.
 
+= GitHub (updates) =
+To check for updates, AI MCP asks the GitHub API for the latest release of github.com/samayunme/AI-MCP, about every few hours and when you click "Check again" in Dashboard > Updates. Sent: a standard request with the plugin version in the user agent; no site data. Updates download from the same repository.
+Terms: https://docs.github.com/site-policy/github-terms/github-terms-of-service Privacy: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement
+
 = MCP clients =
 The MCP server does not contact anything. Apps you connect (such as Claude, ChatGPT, Cursor or ClickUp) send requests to your site with an access token you create, and receive the data their tools ask for. Each app's own terms and privacy policy apply.
 
 == Installation ==
 
-1. Install from Plugins > Add New, or upload the zip in Plugins > Add New > Upload Plugin, and activate.
+1. Download ai-mcp-x.x.x.zip from https://github.com/samayunme/AI-MCP/releases, upload it in Plugins > Add New > Upload Plugin, and activate.
 2. AI MCP > Settings: connect an AI by pasting an API key, and choose the default model.
 3. AI MCP > Chatbots: tune the Default bot, then add [ai_mcp_chatbot id="default"] to a page or pick it as the site popup.
 4. Optional: AI MCP > MCP: turn on the MCP server, create an access token and connect your AI app.
@@ -83,16 +88,21 @@ Settings, chatbot conversations, usage logs, the activity log and knowledge base
 = Can an AI app take over my site? =
 No. MCP is off until you turn it on and create a token. You choose which areas AI may change, or make it read-only. Creating or editing administrators, creating login credentials, changing the site URL or admin email and switching AI MCP off are always blocked, and every change is logged.
 
+= How do updates work? =
+AI MCP updates from its official GitHub releases through the normal WordPress updater, and auto-updates are switched on once by default (turn them off on the Plugins page). Every update file is checked against GitHub's SHA-256 checksum before it installs.
+
 = Does it remove its data when deleted? =
 Only if you turn on "Delete all AI MCP data when the plugin is deleted" in Settings.
 
 == Changelog ==
 
+= 1.0.5 =
+* Automatic updates from the official GitHub releases are back, checksum-verified.
+
 = 1.0.4 =
 * Fixed: switching WooCommerce features on or off failed on WooCommerce 11.
 
 = 1.0.3 =
-* Prepared for WordPress.org: updates now come through WordPress.org only.
 * All admin output is escaped late with wp_kses().
 * Cleaner IP allow list checks.
 
