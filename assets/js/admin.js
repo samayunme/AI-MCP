@@ -64,6 +64,8 @@
 		o.hidden = false;
 	}
 	function fail(box) { return function (e) { if (box) { out(box, esc(e.message), true); } toast(e.message, 'error'); }; }
+	// Shared with module scripts (SEO...), so each module does not need its own helpers.
+	window.MoshAIApp = { api: api, toast: toast, esc: esc };
 	function usage(r) { return (r.tokens_in || r.tokens_out) ? (r.tokens_in || 0) + ' in · ' + (r.tokens_out || 0) + ' out tokens' : ''; }
 	function syncModelLists(scope) {
 		$$('[data-moshai-provider]', scope).forEach(function (sel) {
@@ -130,6 +132,18 @@
 		});
 	});
 	syncModelLists(app);
+
+	/* ---------- Modules ---------- */
+
+	$$('[data-module]', app).forEach(function (sw) {
+		sw.addEventListener('change', function () {
+			sw.disabled = true;
+			api('admin/modules', { id: sw.getAttribute('data-module'), on: sw.checked ? 1 : 0 }).then(function (r) {
+				toast(r.name + (r.enabled ? ' is on' : ' is off') + '. Reloading…', 'success');
+				setTimeout(function () { location.reload(); }, 700);
+			}).catch(function (e) { sw.checked = !sw.checked; sw.disabled = false; fail()(e); });
+		});
+	});
 
 	/* ---------- Home: one-click connect ---------- */
 
