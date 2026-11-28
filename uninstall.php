@@ -7,13 +7,16 @@ if ( empty( $moshai_settings['clean_uninstall'] ) ) {
 	return;
 }
 global $wpdb;
-foreach ( array( 'logs', 'discussions', 'vectors', 'activity' ) as $moshai_table ) {
+foreach ( array( 'logs', 'discussions', 'vectors', 'activity', 'seo_redirects', 'seo_404' ) as $moshai_table ) {
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}moshai_{$moshai_table}" ); // phpcs:ignore
 }
-foreach ( array( 'moshai_settings', 'moshai_chatbots', 'moshai_forms', 'moshai_db_version', 'moshai_models_cache', 'moshai_kb_synced', 'moshai_mcp_clients' ) as $moshai_option ) {
+foreach ( array( 'moshai_settings', 'moshai_chatbots', 'moshai_forms', 'moshai_db_version', 'moshai_models_cache', 'moshai_kb_synced', 'moshai_mcp_clients', 'moshai_modules', 'moshai_module_error_seo', 'moshai_seo', 'moshai_seo_db', 'moshai_seo_redirect_map' ) as $moshai_option ) {
 	delete_option( $moshai_option );
 }
 delete_site_option( 'moshai_autoupdate_default' );
 delete_site_transient( 'moshai_gh_release' );
 delete_post_meta_by_key( '_moshai_meta_description' );
+$wpdb->query( "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE '\\_moshai\\_seo\\_%'" ); // phpcs:ignore
+$wpdb->query( "DELETE FROM {$wpdb->termmeta} WHERE meta_key LIKE '\\_moshai\\_seo\\_%'" ); // phpcs:ignore
+delete_transient( 'moshai_seo_llms' );
 wp_clear_scheduled_hook( 'moshai_daily' );

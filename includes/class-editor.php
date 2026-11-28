@@ -13,10 +13,15 @@ class MoshAI_Editor {
 			add_action( 'add_meta_boxes', array( __CLASS__, 'add_box' ) );
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'assets' ) );
 		}
-		if ( MoshAI_Settings::get( 'meta_description' ) ) {
+		if ( self::light_meta() ) {
 			add_action( 'save_post', array( __CLASS__, 'save_post' ) );
 			add_action( 'wp_head', array( __CLASS__, 'head' ), 1 );
 		}
+	}
+
+	/** The small meta description field, only when the SEO module is off (it has its own). */
+	public static function light_meta() {
+		return MoshAI_Settings::get( 'meta_description' ) && ! ( class_exists( 'MoshAI_Modules' ) && MoshAI_Modules::active( 'seo' ) );
 	}
 
 	public static function post_types() {
@@ -75,7 +80,7 @@ class MoshAI_Editor {
 		echo '<textarea class="moshai-instruction widefat" rows="3" placeholder="' . esc_attr__( 'Optional: extra instructions, or a custom request (e.g. "Rewrite the intro shorter").', 'ai-mcp' ) . '"></textarea>';
 		echo '<p><button type="button" class="button button-primary" data-task="custom">' . esc_html__( 'Ask AI', 'ai-mcp' ) . '</button></p>';
 		echo '<div class="moshai-result" hidden></div>';
-		if ( MoshAI_Settings::get( 'meta_description' ) ) {
+		if ( self::light_meta() ) {
 			wp_nonce_field( 'moshai_meta', 'moshai_meta_nonce' );
 			$value = get_post_meta( $post->ID, '_moshai_meta_description', true );
 			echo '<hr><p><label for="moshai-meta"><strong>' . esc_html__( 'Meta description', 'ai-mcp' ) . '</strong> <span class="moshai-meta-count"></span></label>';
