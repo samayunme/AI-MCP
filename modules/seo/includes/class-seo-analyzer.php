@@ -38,7 +38,7 @@ class MoshAI_SEO_Analyzer {
 		if ( 'product' === $post->post_type && '' !== trim( $post->post_excerpt ) ) {
 			$html .= "\n<p>" . $post->post_excerpt . '</p>';
 		}
-		$html = strip_shortcodes( preg_replace( '/<!--.*?-->/s', '', $html ) );
+		$html = strip_shortcodes( (string) preg_replace( '/<!--.*?-->/s', '', $html ) );
 		self::$content_cache[ $post->ID ] = $html;
 		return $html;
 	}
@@ -128,21 +128,24 @@ class MoshAI_SEO_Analyzer {
 	}
 
 	public static function plain_text( $html ) {
-		$html = preg_replace( '#<(script|style)[^>]*>.*?</\1>#is', ' ', (string) $html );
-		$html = preg_replace( '#</(p|div|h[1-6]|li|tr|blockquote|section|br)\s*>|<br\s*/?>#i', "$0\n", $html );
+		$html = (string) preg_replace( '#<(script|style)[^>]*>.*?</\1>#is', ' ', (string) $html );
+		$html = (string) preg_replace( '#</(p|div|h[1-6]|li|tr|blockquote|section|br)\s*>|<br\s*/?>#i', "$0\n", $html );
 		$text = html_entity_decode( wp_strip_all_tags( $html ), ENT_QUOTES, 'UTF-8' );
-		return trim( preg_replace( '/[ \t]+/u', ' ', $text ) );
+		return trim( (string) preg_replace( '/[ \t]+/u', ' ', (string) $text ) );
 	}
 
 	/* ---------- Text helpers ---------- */
 
 	public static function words( $text ) {
-		preg_match_all( "/[\p{L}\p{N}][\p{L}\p{N}'’-]*/u", mb_strtolower( (string) $text ), $m );
+		// Invalid UTF-8 makes PCRE fail: return no words instead of null (count(null) is fatal on PHP 8).
+		if ( ! preg_match_all( "/[\p{L}\p{N}][\p{L}\p{N}'’-]*/u", mb_strtolower( (string) $text ), $m ) ) {
+			return array();
+		}
 		return $m[0];
 	}
 
 	public static function sentences( $text ) {
-		$text  = preg_replace( '/\s+/u', ' ', (string) $text );
+		$text  = (string) preg_replace( '/\s+/u', ' ', (string) $text );
 		$parts = preg_split( '/(?<=[.!?…])\s+(?=[\p{Lu}\p{N}"“‘\'(])|\n+/u', $text );
 		return array_values( array_filter( array_map( 'trim', (array) $parts ), 'strlen' ) );
 	}
@@ -271,17 +274,17 @@ class MoshAI_SEO_Analyzer {
 		$words      = self::words( $text );
 		$word_count = count( $words );
 		$sentences  = self::sentences( $text );
-		preg_match_all( '#<h([1-6])[^>]*>(.*?)</h\1>#is', $html, $hm );
+		// Very large pages can hit the PCRE backtrack limit: fall back to empty lists, never null.
+		$hm = preg_match_all( '#<h([1-6])[^>]*>(.*?)</h\1>#is', $html, $hm ) ? $hm : array( array(), array(), array() );
 		$headings = array();
 		foreach ( $hm[1] as $i => $lvl ) {
 			$headings[] = array( (int) $lvl, self::plain_text( $hm[2][ $i ] ) );
 		}
-		preg_match_all( '#<img\b[^>]*>#i', $html, $im );
-		$images = $im[0];
+		$images = preg_match_all( '#<img\b[^>]*>#i', $html, $im ) ? $im[0] : array();
 		if ( has_post_thumbnail( $post ) && 'product' === $post->post_type ) {
 			$images[] = '<img alt="' . esc_attr( (string) get_post_meta( get_post_thumbnail_id( $post ), '_wp_attachment_image_alt', true ) ) . '">';
 		}
-		preg_match_all( '#<a\b[^>]*href=["\']([^"\']+)["\']#i', $html, $lm );
+		$lm = preg_match_all( '#<a\b[^>]*href=["\']([^"\']+)["\']#i', $html, $lm ) ? $lm : array( array(), array() );
 		$host     = wp_parse_url( home_url(), PHP_URL_HOST );
 		$internal = 0;
 		$external = 0;
@@ -296,7 +299,7 @@ class MoshAI_SEO_Analyzer {
 				++$external;
 			}
 		}
-		preg_match_all( '#<p[^>]*>(.*?)</p>|<div[^>]*>([^<]{80,})</div>#is', $html, $pm );
+		$pm = preg_match_all( '#<p[^>]*>(.*?)</p>|<div[^>]*>([^<]{80,})</div>#is', $html, $pm ) ? $pm : array( array() );
 		$paragraphs = array();
 		foreach ( $pm[0] as $p ) {
 			$t = self::plain_text( $p );
@@ -538,7 +541,7 @@ class MoshAI_SEO_Analyzer {
 		$c[] = $longest <= 150 ? self::check( 'paragraph_length', 'good', __( 'Paragraph length: good.', 'ai-mcp' ) ) : self::check( 'paragraph_length', $longest <= 200 ? 'ok' : 'bad', sprintf( __( 'A paragraph has %d words. Split paragraphs longer than 150 words.', 'ai-mcp' ), $longest ) );
 
 		// Subheading distribution: text between headings.
-		$sections = preg_split( '#<h[2-6][^>]*>.*?</h[2-6]>#is', $html );
+		$sections = (array) preg_split( '#<h[2-6][^>]*>.*?</h[2-6]>#is', $html );
 		$max      = 0;
 		foreach ( (array) $sections as $sec ) {
 			$max = max( $max, count( self::words( self::plain_text( $sec ) ) ) );
