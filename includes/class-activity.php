@@ -182,6 +182,9 @@ class MoshAI_Activity {
 				break;
 		}
 		if ( '' === $s ) {
+			$s = (string) apply_filters( 'moshai_activity_summary', '', $tool, $a, $r );
+		}
+		if ( '' === $s ) {
 			$s = ucfirst( str_replace( '_', ' ', preg_replace( '/^(wp|wc)_/', '', $tool ) ) ) . ( ! empty( $a['id'] ) ? ' #' . (int) $a['id'] : '' );
 		}
 		return $ok ? $s : 'Failed: ' . $s;

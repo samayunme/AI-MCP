@@ -4,7 +4,7 @@ Tags: ai, chatbot, mcp, ai agent, content generator
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,12 @@ AI MCP updates from its official GitHub releases through the normal WordPress up
 Only if you turn on "Delete all AI MCP data when the plugin is deleted" in Settings.
 
 == Changelog ==
+
+= 1.1.0 =
+* New: Modules. Feature packs live in their own folder and switch on or off in AI MCP > Modules. Off modules load no code.
+* New: SEO module. Title and description templates with variables, per-page SEO fields, Google preview, keyphrase and readability analysis with scores, Open Graph and X cards, JSON-LD schema graph (Organization or Person, WebSite, WebPage, Article, BreadcrumbList), XML sitemaps, breadcrumbs, redirect manager with automatic slug redirects, 404 monitor, robots.txt rules, llms.txt, site verification, head cleanup, RSS links, bulk editor, site audit and import from Yoast or Rank Math.
+* New: 17 MCP tools so an AI can audit and optimize the whole site's SEO and change any SEO setting.
+* New: dashboard redesign with a grouped sidebar.
 
 = 1.0.5 =
 * Automatic updates from the official GitHub releases are back, checksum-verified.
