@@ -319,10 +319,10 @@ class MoshAI_MCP {
 		if ( 'wp_rest_request' === $name ) {
 			return 'GET' !== strtoupper( isset( $args['method'] ) ? (string) $args['method'] : 'GET' );
 		}
-		if ( preg_match( '/^(wp|wc|elementor)_(list|get)_/', $name ) ) {
-			return false;
+		if ( preg_match( '/^(wp|wc|elementor|seo|module)_(list|get|analyze|audit|preview)/', $name ) ) {
+			return (bool) apply_filters( 'moshai_tool_is_write', false, $name, $args );
 		}
-		return ! in_array( $name, array( 'wp_site_info', 'kb_search', 'ai_generate_text', 'wc_sales_report' ), true );
+		return (bool) apply_filters( 'moshai_tool_is_write', ! in_array( $name, array( 'wp_site_info', 'kb_search', 'ai_generate_text', 'wc_sales_report' ), true ), $name, $args );
 	}
 
 	public static function scopes() {
@@ -352,10 +352,11 @@ class MoshAI_MCP {
 		if ( in_array( $name, array( 'wp_upload_media_from_url', 'wp_update_media', 'ai_generate_image', 'wp_set_featured_image' ), true ) ) {
 			return 'media';
 		}
-		if ( preg_match( '/^(elementor_|wp_(toggle|install)_plugin|wp_update_option|wp_update_custom_css|wp_flush_cache)/', $name ) ) {
+		if ( preg_match( '/^(elementor_|wp_(toggle|install)_plugin|wp_update_option|wp_update_custom_css|wp_flush_cache|module_set|seo_(update_settings|create_redirect|delete_redirect|import))/', $name ) ) {
 			return 'site';
 		}
-		return 'content';
+		// Module tools can pick their own scope (content, media, shop, users, site, rest).
+		return (string) apply_filters( 'moshai_tool_scope', 'content', $name, $args );
 	}
 
 	public static function allowed( $name, $args, $source ) {
