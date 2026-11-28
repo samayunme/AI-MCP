@@ -51,18 +51,43 @@ class MoshAI_Admin {
 		}
 	}
 
-	public static function tabs() {
+	/** Sidebar groups, in order. */
+	public static function groups() {
 		return array(
-			'home'      => array( __( 'Home', 'ai-mcp' ), 'edit_posts', 'dashicons-admin-home' ),
-			'agent'     => array( __( 'AI Agent', 'ai-mcp' ), 'manage_options', 'dashicons-format-status' ),
-			'chatbots'  => array( __( 'Chatbots', 'ai-mcp' ), 'manage_options', 'dashicons-format-chat' ),
-			'studio'    => array( __( 'Studio', 'ai-mcp' ), 'edit_posts', 'dashicons-edit-large' ),
-			'forms'     => array( __( 'AI Forms', 'ai-mcp' ), 'manage_options', 'dashicons-feedback' ),
-			'knowledge' => array( __( 'Knowledge', 'ai-mcp' ), 'manage_options', 'dashicons-database' ),
-			'activity'  => array( __( 'Activity', 'ai-mcp' ), 'manage_options', 'dashicons-chart-bar' ),
-			'mcp'       => array( __( 'MCP', 'ai-mcp' ), 'manage_options', 'dashicons-rest-api' ),
-			'settings'  => array( __( 'Settings', 'ai-mcp' ), 'manage_options', 'dashicons-admin-generic' ),
+			'main'   => '',
+			'ai'     => __( 'AI', 'ai-mcp' ),
+			'site'   => __( 'Website', 'ai-mcp' ),
+			'system' => __( 'Control', 'ai-mcp' ),
 		);
+	}
+
+	/**
+	 * Every tab: key => array( label, capability, dashicon, render callback or null, group ).
+	 * Core tabs render with panel_<key>(). Modules add their own tabs with the moshai_admin_tabs filter.
+	 */
+	public static function tabs() {
+		$tabs = array(
+			'home'      => array( __( 'Home', 'ai-mcp' ), 'edit_posts', 'dashicons-admin-home', null, 'main' ),
+			'agent'     => array( __( 'AI Agent', 'ai-mcp' ), 'manage_options', 'dashicons-format-status', null, 'ai' ),
+			'chatbots'  => array( __( 'Chatbots', 'ai-mcp' ), 'manage_options', 'dashicons-format-chat', null, 'ai' ),
+			'studio'    => array( __( 'Studio', 'ai-mcp' ), 'edit_posts', 'dashicons-edit-large', null, 'ai' ),
+			'forms'     => array( __( 'AI Forms', 'ai-mcp' ), 'manage_options', 'dashicons-feedback', null, 'ai' ),
+			'knowledge' => array( __( 'Knowledge', 'ai-mcp' ), 'manage_options', 'dashicons-database', null, 'ai' ),
+			'activity'  => array( __( 'Activity', 'ai-mcp' ), 'manage_options', 'dashicons-chart-bar', null, 'system' ),
+			'mcp'       => array( __( 'MCP', 'ai-mcp' ), 'manage_options', 'dashicons-rest-api', null, 'system' ),
+			'modules'   => array( __( 'Modules', 'ai-mcp' ), 'manage_options', 'dashicons-screenoptions', array( 'MoshAI_Modules', 'panel' ), 'system' ),
+			'settings'  => array( __( 'Settings', 'ai-mcp' ), 'manage_options', 'dashicons-admin-generic', null, 'system' ),
+		);
+		$tabs = (array) apply_filters( 'moshai_admin_tabs', $tabs );
+		$out  = array();
+		foreach ( array_keys( self::groups() ) as $group ) {
+			foreach ( $tabs as $k => $t ) {
+				if ( ( isset( $t[4] ) ? $t[4] : 'site' ) === $group ) {
+					$out[ $k ] = $t;
+				}
+			}
+		}
+		return $out + $tabs;
 	}
 
 	public static function slug( $tab ) {
@@ -241,14 +266,23 @@ class MoshAI_Admin {
 			MoshAI_Kses::out( self::mcp_pill() );
 		}
 		echo '</div>';
-		echo '</header><nav class="mx-tabs" role="tablist">';
+		echo '</header><div class="mx-shell"><nav class="mx-tabs mx-side" role="tablist" aria-label="AI MCP">';
+		$groups = self::groups();
+		$group  = null;
 		foreach ( self::tabs() as $k => $t ) {
 			if ( current_user_can( $t[1] ) ) {
+				$g = isset( $t[4] ) ? $t[4] : 'site';
+				if ( $g !== $group ) {
+					$group = $g;
+					if ( ! empty( $groups[ $g ] ) ) {
+						echo '<span class="mx-side-label">' . esc_html( $groups[ $g ] ) . '</span>';
+					}
+				}
 				$lock = self::locked( $k );
 				echo '<a role="tab" href="' . esc_url( self::url( $k ) ) . '" data-go="' . esc_attr( $k ) . '" class="mx-tab' . ( $k === $tab ? ' is-active' : '' ) . ( $lock ? ' is-locked' : '' ) . '"' . ( $lock ? ' title="' . esc_attr__( 'Connect an AI to unlock', 'ai-mcp' ) . '"' : '' ) . '><span class="dashicons ' . esc_attr( $lock ? 'dashicons-lock' : $t[2] ) . '"></span>' . esc_html( $t[0] ) . '</a>';
 			}
 		}
-		echo '</nav>';
+		echo '</nav><main class="mx-main">';
 
 		foreach ( MoshAI_Providers::models() as $p => $models ) {
 			echo '<datalist id="moshai-models-' . esc_attr( $p ) . '">';
@@ -266,12 +300,14 @@ class MoshAI_Admin {
 			$lock = self::locked( $k );
 			if ( $lock ) {
 				self::lock_card( $k, $lock );
-			} else {
+			} elseif ( method_exists( __CLASS__, 'panel_' . $k ) ) {
 				call_user_func( array( __CLASS__, 'panel_' . $k ) );
+			} elseif ( ! empty( $t[3] ) && is_callable( $t[3] ) ) {
+				call_user_func( $t[3] );
 			}
 			echo '</section>';
 		}
-		echo '<div class="mx-toast" role="status" aria-live="polite" hidden></div></div>';
+		echo '</main></div><div class="mx-toast" role="status" aria-live="polite" hidden></div></div>';
 	}
 
 	/* ---------- Home ---------- */
@@ -813,7 +849,7 @@ class MoshAI_Admin {
 
 		echo '<div class="mx-card" id="mx-s-editor"><h2>' . esc_html__( 'Editor and SEO', 'ai-mcp' ) . '</h2>';
 		MoshAI_Kses::out( self::toggle( 'editor_assistant', $s['editor_assistant'], __( 'AI Assistant box on posts, pages and products', 'ai-mcp' ), __( 'Titles, excerpts, SEO descriptions, tags, full content, product copy.', 'ai-mcp' ) ) );
-		MoshAI_Kses::out( self::toggle( 'meta_description', $s['meta_description'], __( 'Meta description field', 'ai-mcp' ), __( 'Printed in the page head. Skipped automatically when Yoast, Rank Math, AIOSEO or SEOPress is active.', 'ai-mcp' ) ) );
+		MoshAI_Kses::out( self::toggle( 'meta_description', $s['meta_description'], __( 'Meta description field', 'ai-mcp' ), __( 'Printed in the page head. Not needed when the SEO module is on (it has a full SEO box), and skipped when Yoast, Rank Math, AIOSEO or SEOPress is active.', 'ai-mcp' ) ) );
 		echo '</div>';
 
 		echo '<div class="mx-card" id="mx-s-data"><h2>' . esc_html__( 'Data', 'ai-mcp' ) . '</h2><div class="mx-grid mx-grid-2">';
