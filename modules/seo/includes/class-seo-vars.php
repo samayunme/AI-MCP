@@ -68,9 +68,9 @@ class MoshAI_SEO_Vars {
 	/** Removes doubled separators and spaces left by empty variables. */
 	private static function tidy( $text ) {
 		$sep  = preg_quote( self::sep(), '/' );
-		$text = preg_replace( '/\s+/u', ' ', $text );
-		$text = preg_replace( '/(\s*' . $sep . '\s*){2,}/u', ' ' . self::sep() . ' ', $text );
-		$text = preg_replace( '/^\s*' . $sep . '\s*|\s*' . $sep . '\s*$/u', '', $text );
+		$text = (string) preg_replace( '/\s+/u', ' ', $text );
+		$text = (string) preg_replace( '/(\s*' . $sep . '\s*){2,}/u', ' ' . self::sep() . ' ', $text );
+		$text = (string) preg_replace( '/^\s*' . $sep . '\s*|\s*' . $sep . '\s*$/u', '', $text );
 		return trim( wp_strip_all_tags( $text ) );
 	}
 
@@ -184,7 +184,7 @@ class MoshAI_SEO_Vars {
 		if ( '' === $text ) {
 			$text = MoshAI_SEO_Analyzer::plain_text( MoshAI_SEO_Analyzer::content( $post ) );
 		}
-		$text = trim( preg_replace( '/\s+/u', ' ', $text ) );
+		$text = trim( (string) preg_replace( '/\s+/u', ' ', $text ) );
 		if ( mb_strlen( $text ) <= $length ) {
 			return $text;
 		}
